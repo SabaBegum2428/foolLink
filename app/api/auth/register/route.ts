@@ -20,6 +20,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // Password Validation: 8+ chars, 1 upper, 1 lower, 1 number, 1 special
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!strongPasswordRegex.test(password)) {
+      return NextResponse.json({ error: 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.' }, { status: 400 });
+    }
+
+    // Contact Validation: Only numbers
+    const numericRegex = /^\d+$/;
+    if (!numericRegex.test(contact)) {
+      return NextResponse.json({ error: 'Contact number must contain only numbers.' }, { status: 400 });
+    }
+
     if (['NGO', 'Receiver', 'Donor'].includes(role) && !proofFile) {
       return NextResponse.json({ error: `Valid proof file required for ${role}` }, { status: 400 });
     }

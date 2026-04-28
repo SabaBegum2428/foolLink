@@ -13,17 +13,19 @@ export default function Nav() {
       <Link href="/" className="logo">
         🍽️ FoodLink
       </Link>
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+      <div className="nav-links">
         {user ? (
           <>
-            <Link href="/dashboard" className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>Dashboard</Link>
-            <button onClick={logout} className="btn" style={{ background: 'transparent', color: 'var(--danger)', padding: 0 }}>
+            <Link href="/dashboard" className="nav-link" style={{ borderBottom: '2px solid var(--secondary)' }}>
+              Dashboard
+            </Link>
+            <button onClick={logout} className="btn nav-link" style={{ background: 'transparent', color: '#fca5a5', padding: 0 }}>
               Logout ({user.name.split(' ')[0]})
             </button>
           </>
         ) : (
           <>
-            <Link href="/login" style={{ textDecoration: 'none', color: 'var(--text-active)', fontWeight: '600' }}>Login</Link>
+            <Link href="/login" className="nav-link">Login</Link>
             <Link href="/register" className="btn btn-primary">Join Now</Link>
           </>
         )}

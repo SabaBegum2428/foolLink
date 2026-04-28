@@ -5,7 +5,7 @@ import Nav from "./components/Nav";
 
 export const metadata: Metadata = {
   title: "FoodLink - Real-time Food Redistribution",
-  description: "Connecting Donors, NGOs, Volunteers, and Receivers to combat hunger.",
+  description: "Connecting Donors, NGO / Receivers, and Volunteers to combat hunger.",
 };
 
 export default function RootLayout({

@@ -36,10 +36,13 @@ export async function PUT(request: Request) {
 
     // Also update associated donation status for simplicity
     if (status === 'Picked Up') {
-      db.prepare('UPDATE donations SET status = ? WHERE id = ?').run('In Transit', donation_id);
+      db.prepare('UPDATE donations SET status = ? WHERE id = ?').run('In Progress', donation_id);
     }
     if (status === 'Delivered') {
       db.prepare('UPDATE donations SET status = ? WHERE id = ?').run('Delivered', donation_id);
+    }
+    if (status === 'Completed') {
+      db.prepare('UPDATE donations SET status = ? WHERE id = ?').run('Completed', donation_id);
     }
 
     return NextResponse.json({ success: true });

@@ -20,7 +20,7 @@ export default function RegisterPage() {
   const router = useRouter();
   const { refreshUser } = useAuth();
   
-  const requiresProof = formData.role === "NGO" || formData.role === "Receiver" || formData.role === "Donor";
+  const requiresProof = formData.role === "NGO" || formData.role === "Donor";
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +33,20 @@ export default function RegisterPage() {
 
     if (!agreement) {
         setError("You must take full responsibility for the quality and safety of your participation.");
+        return;
+    }
+
+    // Password Validation: 8+ chars, 1 upper, 1 lower, 1 number, 1 special
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!strongPasswordRegex.test(formData.password)) {
+        setError("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+        return;
+    }
+
+    // Contact Validation: Only numbers
+    const numericRegex = /^\d+$/;
+    if (!numericRegex.test(formData.contact)) {
+        setError("Contact number must contain only numbers.");
         return;
     }
 
@@ -113,17 +127,23 @@ export default function RegisterPage() {
               onChange={e => setFormData({...formData, password: e.target.value})} 
               required 
               placeholder="••••••••"
+              title="Must contain at least 8 characters, one uppercase, one lowercase, one number and one special character"
             />
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+              Minimum 8 characters, with uppercase, lowercase, number, and special character.
+            </p>
           </div>
           <div className="input-group">
-            <label>Contact Number</label>
+            <label>Contact Number (Numbers only)</label>
             <input 
               type="text" 
               className="input"
               value={formData.contact} 
               onChange={e => setFormData({...formData, contact: e.target.value})} 
               required 
-              placeholder="+1 (555) 000-0000"
+              placeholder="1234567890"
+              pattern="\d+"
+              title="Please enter only digits."
             />
           </div>
 
@@ -147,9 +167,8 @@ export default function RegisterPage() {
               onChange={e => setFormData({...formData, role: e.target.value})} 
             >
               <option value="Donor">Donor (Providing Food)</option>
-              <option value="NGO">NGO (Managing Redistribution)</option>
+              <option value="NGO">NGO / Receiver (Managing Relief)</option>
               <option value="Volunteer">Volunteer (Logistics/Delivery)</option>
-              <option value="Receiver">Receiver (Orphanage/Rest-house)</option>
             </select>
           </div>
 
@@ -169,8 +188,9 @@ export default function RegisterPage() {
                     style={{ 
                       width: '100%', 
                       padding: '0.5rem', 
-                      background: 'rgba(0,0,0,0.2)', 
+                      background: '#ffffff', 
                       borderRadius: '0.5rem',
+                      border: '1px solid rgba(5, 150, 105, 0.2)',
                       color: 'var(--text-active)'
                     }}
                   />
